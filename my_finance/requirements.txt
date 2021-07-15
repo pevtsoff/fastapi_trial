@@ -1,0 +1,9 @@
+fastapi
+pydantic
+uvicorn
+sqlalchemy
+python-dotenv
+pydantic[dotenv]
+python-jose
+passlib[bcrypt]
+python-multipart
