@@ -10,5 +10,6 @@ uvicorn.run(
     reload=True,
 )
 
+# https://stackoverflow.com/questions/68230481/sqlalchemy-attributeerror-asyncengine-object-has-no-attribute-run-ddl-visit
 
 Base.metadata.create_all(engine)

@@ -1,4 +1,6 @@
 from typing import List, Optional
+
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
 from my_finance import tables
@@ -10,28 +12,30 @@ class OperationsService:
     def __init__(self, session: Session = Depends(get_session)):
         self.session = session
 
-    def get_list(
+    async def get_list(
         self, user_id: int, kind: Optional[OperationKind]
     ) -> List[tables.Operation]:
-        query = self.session.query(tables.Operation)
+        query = select(tables.Operation)
+
 
         if kind:
-            query = query.filter_by(kind=kind)
+            query = select(tables.Operation).where(tables.Operation.kind==kind)
+        else:
+            query = select(tables.Operation).where(tables.Operation.user_id==user_id)
 
-        query = query.filter_by(user_id=user_id)
+        result = await self.session.execute(query)
+        return result.scalars().all()
 
-        return query.all()
-
-    def create(self, user_id: int, operation_data: OperationCreate) -> tables.Operation:
+    async def create(self, user_id: int, operation_data: OperationCreate) -> tables.Operation:
         operation = tables.Operation(**operation_data.dict(), user_id=user_id)
         self.session.add(operation)
-        self.session.commit()
+        await self.session.commit()
         return operation
 
-    def get(self, user_id: int, operation_id) -> tables.Operation:
-        return self._get(user_id, operation_id)
+    async def get(self, user_id: int, operation_id) -> tables.Operation:
+        return await self._get(user_id, operation_id)
 
-    def update(
+    async def update(
         self, user_id: int, operation_id: int, operation_data: OperationUpdate
     ) -> tables.Operation:
         operation = self._get(user_id, operation_id)
@@ -39,21 +43,24 @@ class OperationsService:
         for field, value in operation_data:
             setattr(operation, field, value)
 
-        self.session.commit()
+        await self.session.commit()
 
         return operation
 
-    def delete(self, user_id: int, operation_id: int):
+    async def delete(self, user_id: int, operation_id: int):
         operation = self._get(user_id, operation_id)
         self.session.delete(operation)
-        self.session.commit()
+        await self.session.commit()
 
-    def _get(self, user_id: int, operation_id: int) -> tables.Operation:
-        operation = (
-            self.session.query(tables.Operation)
-            .filter_by(id=operation_id, user_id=user_id)
-            .first()
-        )
+    async def _get(self, user_id: int, operation_id: int) -> tables.Operation:
+        # operation = (
+        #     self.session.query(tables.Operation)
+        #     .filter_by(id=operation_id, user_id=user_id)
+        #     .first()
+        # )
+        query = select(tables.Operation).where(id=operation_id, user_id=user_id)
+        result = await self.session.execute(query)
+        operation = result.scalars().first()
 
         if not operation:
             raise HTTPException(

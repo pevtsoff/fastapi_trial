@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-
+from sqlalchemy import select
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
@@ -70,7 +70,7 @@ class AuthService:
     def __init__(self, session: Session = Depends(get_session)):
         self.session = session
 
-    def register_new_user(self, user_data: models.auth.UserCreate) -> models.auth.Token:
+    async def register_new_user(self, user_data: models.auth.UserCreate) -> models.auth.Token:
         user = tables.User(
             email=user_data.email,
             username=user_data.username,
@@ -78,16 +78,21 @@ class AuthService:
         )
 
         self.session.add(user)
-        self.session.commit()
+
+        #await self.session.flush()
+        await self.session.commit()
+
         return self.create_token(user)
 
-    def authenticate_user(self, username: str, password: str) -> models.auth.Token:
+    async def authenticate_user(self, username: str, password: str) -> models.auth.Token:
         exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="username is not found or password is incorrect",
             headers={"WWW-Authenticate": "Bearer"},
         )
-        user = self.session.query(tables.User).filter_by(username=username).first()
+        query = select(tables.User).where(tables.User.username==username)
+        user = await self.session.execute(query)
+        user = user.scalars().first()
 
         if not user or not self.verify_password(password, user.password_hash):
             raise exception
