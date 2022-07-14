@@ -1,0 +1,39 @@
+version: '3.4'
+
+# general python base for future services like celery
+x-base-python: &x-base-python
+  build:
+    context: .
+    dockerfile: ./Dockerfile
+  image: app_template
+  environment:
+    - PYTHONUNBUFFERED=1
+  restart: always
+
+
+
+services:
+  app:
+    <<: *x-base-python
+    command: poetry run python3  -m app
+    container_name: app_template
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    hostname: app
+    volumes:
+      - .:/srv/
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test_db
+      - PYTHONPATH=.
+
+
+
