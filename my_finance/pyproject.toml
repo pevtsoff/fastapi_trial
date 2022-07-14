@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "my_finance"
+version = "0.1.0"
+description = ""
+authors = ["Ivan Pevtsov <pevtsovi@cqg.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.78.0"
+SQLAlchemy = "^1.4.39"
+python-dotenv = "^0.20.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
