@@ -5,10 +5,11 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from .settings import settings
-logger = logging.getLogger(__name__)
-engine = create_engine(settings.database_url, connect_args={"check_same_thread": False})
 
-Session = sessionmaker(engine, autocommit=False, autoflush=True)
+logger = logging.getLogger(__name__)
+
+# engine = create_engine(settings.database_url, connect_args={"check_same_thread": False})
+# Session = sessionmaker(engine, autocommit=False, autoflush=True)
 
 
 # @app.on_event("startup")

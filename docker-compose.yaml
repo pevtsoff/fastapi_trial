@@ -15,7 +15,7 @@ x-base-python: &x-base-python
 services:
   app:
     <<: *x-base-python
-    command: poetry run python3  -m app
+    command: uvicorn app:app --reload --workers 1 --host 0.0.0.0 --port 8000 #poetry run python3 -m app
     container_name: app_template
     depends_on:
       - postgres
@@ -32,7 +32,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=test_db
+      - POSTGRES_DB=postgres
       - PYTHONPATH=.
 
 
