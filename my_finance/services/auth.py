@@ -78,8 +78,6 @@ class AuthService:
         )
 
         self.session.add(user)
-
-        #await self.session.flush()
         await self.session.commit()
 
         return self.create_token(user)
