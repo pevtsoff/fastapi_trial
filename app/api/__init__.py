@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from my_finance.api.operations import router as operations_router
-from my_finance.api.auth import router as auth_router
+from app.api.operations import router as operations_router
+from app.api.auth import router as auth_router
 
 router = APIRouter()
 

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from my_finance.database import get_session
-from my_finance.models.auth import UserCreate, Token, User
+from app.database import get_session
+from app.models.auth import UserCreate, Token, User
 from fastapi.security import OAuth2PasswordRequestForm
-from my_finance.services.auth import AuthService, get_current_user
+from app.services.auth import AuthService, get_current_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

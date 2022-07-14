@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, Response, status
 from typing import List, Optional
 
-from my_finance.models.auth import User
-from my_finance.models.operations import (
+from app.models.auth import User
+from app.models.operations import (
     Operation,
     OperationKind,
     OperationCreate,
     OperationUpdate,
 )
-from my_finance.services.auth import get_current_user
-from my_finance.services.operations import OperationsService
+from app.services.auth import get_current_user
+from app.services.operations import OperationsService
 
 
 router = APIRouter(prefix="/operations", tags=["operations"])

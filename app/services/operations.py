@@ -3,9 +3,9 @@ from typing import List, Optional
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
-from my_finance import tables
-from my_finance.database import get_session
-from my_finance.models.operations import OperationKind, OperationCreate, OperationUpdate
+from app import tables
+from app.database import get_session
+from app.models.operations import OperationKind, OperationCreate, OperationUpdate
 
 
 class OperationsService:

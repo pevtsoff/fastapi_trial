@@ -6,11 +6,11 @@ from jose import jwt, JWTError
 from passlib.hash import bcrypt
 from pydantic import ValidationError
 
-from my_finance import models
-from my_finance.database import get_session
-from my_finance.models.auth import UserCreate
-from my_finance.settings import settings
-from my_finance import tables
+from app import models
+from app.database import get_session
+from app.models.auth import UserCreate
+from app.settings import settings
+from app import tables
 from sqlalchemy.orm import Session
 
 
