@@ -15,7 +15,8 @@ x-base-python: &x-base-python
 services:
   app:
     <<: *x-base-python
-    command: uvicorn app:app --reload --workers 1 --host 0.0.0.0 --port 8000 #poetry run python3 -m app
+    command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    #uvicorn app:app --reload --workers 1 --host 0.0.0.0 --port 8000 #poetry run python3 -m app
     container_name: app_template
     depends_on:
       - postgres
