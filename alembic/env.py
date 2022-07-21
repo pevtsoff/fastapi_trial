@@ -28,6 +28,7 @@ def do_migrations(connection):
     with context.begin_transaction():
         context.run_migrations()
 
+
 async def run_migrations_offline():
     """Run migrations in 'online' mode.
 
