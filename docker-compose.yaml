@@ -8,6 +8,7 @@ x-base-python: &x-base-python
   image: app_template
   environment:
     - PYTHONUNBUFFERED=1
+    - PYTHONPATH=.
   restart: always
 
 
@@ -15,7 +16,7 @@ x-base-python: &x-base-python
 services:
   app:
     <<: *x-base-python
-    command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    command: bash -c "alembic upgrade head && uvicorn app.app:app --host 0.0.0.0 --port 8000 --reload"
     #uvicorn app:app --reload --workers 1 --host 0.0.0.0 --port 8000 #poetry run python3 -m app
     container_name: app_template
     depends_on:
