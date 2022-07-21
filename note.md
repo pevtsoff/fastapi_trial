@@ -1,2 +1,2 @@
 # Running migrations:
-alembic -c alembic.ini revision --autogenerate -m "First migration"
+ docker-compose run app alembic revision --autogenerate -m "First migration"
